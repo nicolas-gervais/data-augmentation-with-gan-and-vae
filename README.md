@@ -1,4 +1,4 @@
-# data-augmentation-with-gan-and-vae :100:
+# data-augmentation-with-gan-and-vae :b:
 
 [Vincent Fortin](https://github.com/vincentfortin) and I are using the [UTK Faces dataset](http://aicip.eecs.utk.edu/wiki/UTKFace) to for the project in the [_Machine Learning I_](https://www.hec.ca/en/courses/detail/?cours=MATH80629A) project. 
 
