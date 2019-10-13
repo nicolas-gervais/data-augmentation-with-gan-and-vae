@@ -8,10 +8,10 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 1. [First we trained a VAE](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Variational%20Auto%20Encoder%20on%20Human%20Faces.ipynb) to generate human faces
 2. [Then we trained a ConvNet with Pytorch](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Pytorch%20ConvNet%20Distinguishing%20Men%20and%20Women.ipynb) but it didn't work.
 3. So we tried with Keras to see if our architecture was the problem. It's not. [We reached 90% accuracy](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Keras%20CNN%20Benchmark.ipynb). 
+4. Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb).
 ## TO DO
 - [x] Train a Keras Model
 - [ ] Create a GAN to generate human faces
-    - Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb)
 - [ ] Explore other generative methods
 - [ ] Train CNNs to see if the accuracy is better with the generative methods
 - [ ] Fix the Pytorch CNN
