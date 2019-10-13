@@ -11,6 +11,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 ## TO DO
 - [x] Train a Keras Model
 - [ ] Create a GAN to generate human faces
+    - Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb)
 - [ ] Explore other generative methods
 - [ ] Train CNNs to see if the accuracy is better with the generative methods
 - [ ] Fix the Pytorch CNN
