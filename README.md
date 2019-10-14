@@ -27,4 +27,5 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 - Try random erasing
 ## Example of the Adversarial Auto Encoder Learning
 ![Alt Text](https://media.discordapp.net/attachments/552684049588682752/632967292946350080/sickgif.gif)
+
 This is the output (generated faces) of the adversarial autoencoder.
