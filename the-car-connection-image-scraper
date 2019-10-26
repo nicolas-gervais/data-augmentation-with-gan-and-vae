@@ -1,0 +1,106 @@
+from selenium import webdriver
+import bs4 as bs
+from urllib.request import Request, urlopen
+import pandas as pd
+import os
+os.chdir('c:/users/nicolas/documents/data/thecarconnection')
+
+website = 'https://www.thecarconnection.com'
+
+
+def fetch(page, addition=''):
+    return bs.BeautifulSoup(urlopen(Request(page + addition,
+            headers={'User-Agent': 'Opera/9.80 (X11; Linux i686; Ub'\
+                     'untu/14.10) Presto/2.12.388 Version/12.16'})).read(), 'lxml')
+
+def all_makes():
+    all_makes_list = []
+    for a in fetch(website, "/new-cars").find_all("a", {"class": "add-zip"}):
+        all_makes_list.append(a['href'])
+    return all_makes_list
+
+def make_menu(listed):
+    make_menu_list = []
+    for make in listed[:2]: # REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE #
+        for div in fetch(website, make).find_all("div", {"class": "name"}):
+            make_menu_list.append(div.find_all("a")[0]['href'])
+    return make_menu_list
+
+def model_menu(listed):
+    model_menu_list = []
+    for make in listed:
+        soup = fetch(website, make)
+        for div in soup.find_all("a", {"class": "btn avail-now first-item"}):
+            model_menu_list.append(div['href'])
+        for div in soup.find_all("a", {"class": "btn 1"})[:5]:
+            model_menu_list.append(div['href'])
+    return model_menu_list
+
+def year_model_overview(listed):
+    year_model_overview_list = []
+    for make in listed[:2]: # REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE
+        for id in fetch(website, make).find_all("a", {"id": "ymm-nav-specs-btn"}):
+            year_model_overview_list.append(id['href'])
+    try:
+        year_model_overview_list.remove("/specifications/buick_enclave_2019_fwd-4dr-preferred")
+    except:
+        pass
+    return year_model_overview_list
+
+def trims(listed):
+    trim_list = []
+    for row in listed:
+        div = fetch(website, row).find_all("div", {"class": "block-inner"})[-1]
+        div_a = div.find_all("a")
+        for i in range(len(div_a)):
+            trim_list.append(div_a[-i]['href'])
+    return trim_list
+
+
+def specifications(website, trims):
+    driver = webdriver.Chrome(r'C:\Program Files (x86)\Google/chromedriver.exe')
+    specifications_table = pd.DataFrame()
+    for inx, webpage in enumerate(trims.iloc[:, 0]):
+        soup = fetch(website, webpage)
+        specifications_df = pd.DataFrame(columns=[soup.find_all("title")[0].text[:-15]])
+        try:
+            msrp_text = soup.find_all("div", {"class": "price"})[0]
+            if len(msrp_text.find_all("a")) >= 1:
+                specifications_df.loc["MSRP"] = msrp_text.find_all("a")[0].text
+        except:
+            print('No MSRP for {}'.format(webpage))
+        for div in soup.find_all("div", {"class": "specs-set-item"})[:9]:
+            row_name = div.find_all("span")[0].text
+            row_value = div.find_all("span")[1].text
+            specifications_df.loc[row_name] = row_value
+        # print(specifications_df)
+        try:
+            specifications_df = specifications_df.loc[['MSRP', 'Gas Mileage', 'EPA Class', 'Drivetrain',
+                                                   'Passenger Capacity', 'Passenger Doors', 'Body Style']]
+            driver.get(website + webpage.replace('specifications', 'overview'))
+            class_img = driver.find_elements_by_class_name('image')
+        except:
+            print(f'Problem with {website + webpage}')
+        list_urls = []
+        for ii in class_img:
+            list_urls.append(ii.get_attribute('data-image-huge'))
+        for ix, iii in enumerate(list_urls[:10]): # REMOVE REMOVE REMOVE
+            specifications_df.loc['Picture_%i' % ix, :] = iii
+        specifications_table = pd.concat([specifications_table, specifications_df], axis=1, sort=False)
+        if inx % 1_0 == 0:
+            print(str(inx), 'completed.')
+    return specifications_table
+
+if __name__ == '__main__':
+    a = all_makes()
+    b = make_menu(a)
+    c = model_menu(b)
+    d = year_model_overview(c)
+    e = trims(d)
+    f = pd.DataFrame(e).to_csv('trims_octobre_2019.csv', index=False, header=None)
+    g = pd.read_csv('trims_octobre_2019.csv')
+    h = specifications(website, g)
+
+    pd.DataFrame(e).to_csv('pictures.csv', index=False, header=None)
+
+
