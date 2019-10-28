@@ -93,3 +93,7 @@ if __name__ == '__main__':
     h = specifications(website, g)
 
     pd.DataFrame(h).to_csv('pictures.csv')
+
+
+
+
