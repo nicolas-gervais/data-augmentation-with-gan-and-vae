@@ -1,0 +1,43 @@
+import numpy as np
+from glob import glob
+import matplotlib.pyplot as plt
+import os
+os.chdir('c:/users/nicolas/documents/data/faces')
+from PIL import Image
+
+
+def split_pics(source_dir):
+    """
+    Splits an array of 5x5 pictures, of size 60x60.
+    Additionally, it adds a directory in the provided directory, called 'split'.
+    """
+
+    for photo in glob('%s/*.png' % source_dir):
+        a = plt.imread(photo)
+        b = np.array(a)
+        c = np.vsplit(b, np.arange(1, b.shape[0], 62))
+        d = c[1:-1]
+
+        pictures = []
+
+        for i in d:
+            imgs = np.hsplit(i, np.arange(1, 312, 62))
+            imgs = imgs[1:-1]
+            for i in imgs:
+                pictures.append(i[1:-1, 1:-1])
+
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                   'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                   'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                   'y', 'z']
+
+        os.mkdir('%s/split' % sourcedir)
+
+        for pic in pictures:
+            filename = '{}/split/{}.png'.format(source_dir, ''.join(np.random.choice(letters, 15)))
+            pic *= 255
+            im = Image.fromarray(pic.astype(np.uint8))
+            im.save(filename)
+
+
+split_pics('aae')
