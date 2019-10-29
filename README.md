@@ -9,6 +9,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 2. [Then we trained a ConvNet with Pytorch](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Pytorch%20ConvNet%20Distinguishing%20Men%20and%20Women.ipynb) but it didn't work.
 3. So we tried with Keras to see if our architecture was the problem. It's not. [We reached 90% accuracy](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Keras%20CNN%20Benchmark.ipynb). 
 4. Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb).
+5. Here is the [Wasserstein GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Wasserstein%20GAN.ipynb).
 ## TO DO
 - [x] Train a Keras Model
 - [ ] Create a GAN to generate human faces
@@ -29,3 +30,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 ![Alt Text](https://media.discordapp.net/attachments/552684049588682752/632967292946350080/sickgif.gif)
 
 This is the output (generated faces) of the adversarial autoencoder.
+
+## Wasserstein GAN Output
+![Alt Text](https://media.discordapp.net/attachments/552684049588682752/638765160466612234/unknown.png)
+
