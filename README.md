@@ -10,6 +10,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 3. So we tried with Keras to see if our architecture was the problem. It's not. [We reached 90% accuracy](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Keras%20CNN%20Benchmark.ipynb). 
 4. Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb).
 5. Here is the [Wasserstein GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Wasserstein%20GAN.ipynb).
+6. The [Softmax GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/softmax%20gan.ipynb) worked out pretty well.
 ## TO DO
 - [x] Train a Keras Model
 - [ ] Create a GAN to generate human faces
