@@ -177,7 +177,8 @@ def specifications(website, trims, keep_all_images=True):
         if len(class_img) > 0:
             specifications_table_all = pd.concat([specifications_table_all, specifications_df_all], axis=1, sort=False)
             if rear_front_img_count > 0:
-                specifications_table_front_rear = pd.concat([specifications_table_front_rear, specifications_df_front_rear], axis=1, sort=False)
+                specifications_table_front_rear = pd.concat([specifications_table_front_rear, specifications_df_front_rear], 
+                                                            axis=1, sort=False)
         else:
             print(website + webpage.replace('specifications', 'overview'))
 
@@ -241,19 +242,5 @@ if __name__ == '__main__':
             pic_name = row_front['imgName']
             for ix, url in enumerate(img_urls):
                 saveImage(url, pic_name+'_'+str(ix), 'front_rear')
-
-
-        # saveImage('https://images.hgmsites.net/hug/2008-acura-mdx-4wd-4-door-sport-entertainment-pkg-temperature-controls_100283848_h.jpg',
-        #             'imgabc', 'all_images')
-    
-
-
-
-
-
-
-
-
-
 
 
