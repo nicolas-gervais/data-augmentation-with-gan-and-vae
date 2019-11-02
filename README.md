@@ -16,7 +16,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 ## TO DO
 - [x] Train a Tensorflow convolutional neural network as classifier
 - [x] Create a GAN to generate human faces
-- [ ] Explore other generative methods
+- [x] Explore other generative methods
 - [ ] Train CNNs to see if the accuracy is better with the generative methods
 - [x] Fix the Pytorch CNN
 ## PROJECT PLAN
