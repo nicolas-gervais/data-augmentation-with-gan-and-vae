@@ -19,6 +19,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 - [x] Explore other generative methods
 - [ ] Train CNNs to see if the accuracy is better with the generative methods
 - [x] Fix the Pytorch CNN
+- [ ] Use Keras and Pydot to plot the chosen architecture
 ## PROJECT PLAN
 1. Create various sample generators
 2. Establish a benchmark CNN classifier, trained with 10% of the female samples (smaller class)
