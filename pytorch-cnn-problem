@@ -1,0 +1,134 @@
+import numpy as np
+from PIL import Image
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from torch.autograd import Variable
+from keras.datasets import mnist
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+
+def resize(pics):
+    pictures = []
+    for image in pics:
+        image = Image.fromarray(image).resize((dim, dim))
+        image = np.array(image)
+        pictures.append(image)
+    return np.array(pictures)
+
+
+dim = 60
+
+x_train, x_test = resize(x_train), resize(x_test)
+
+x_train = x_train.reshape(-1, 1, dim, dim).astype('float32') / 255
+x_test = x_test.reshape(-1, 1, dim, dim).astype('float32') / 255
+y_train, y_test = y_train.astype('float32'), y_test.astype('float32') 
+
+if torch.cuda.is_available():
+    x_train = torch.from_numpy(x_train)[:10_000]
+    x_test = torch.from_numpy(x_test)[:4_000] 
+    y_train = torch.from_numpy(y_train)[:10_000] 
+    y_test = torch.from_numpy(y_test)[:4_000]
+
+
+class ConvNet(nn.Module):
+    
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3)
+        self.conv2 = nn.Conv2d(32, 64, 3)
+        self.conv3 = nn.Conv2d(64, 128, 3)
+        
+        self.fc1 = nn.Linear(5*5*128, 1024) 
+        self.fc2 = nn.Linear(1024, 2048)
+        self.fc3 = nn.Linear(2048, 1)
+    
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
+        x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
+        x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
+        
+        x = x.view(x.size(0), -1) 
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.dropout(x, 0.5)
+        x = torch.sigmoid(self.fc3(x))
+        return x
+
+
+net = ConvNet()
+
+optimizer = optim.Adam(net.parameters(), lr=0.03)
+
+loss_function = nn.BCELoss()
+
+
+class FaceTrain:
+    
+    def __init__(self):
+        self.len = x_train.shape[0]
+        self.x_train = x_train
+        self.y_train = y_train
+        
+    def __getitem__(self, index):
+        return x_train[index], y_train[index].unsqueeze(0)
+    
+    def __len__(self):
+        return self.len
+
+
+class FaceTest:
+    
+    def __init__(self):
+        self.len = x_test.shape[0]
+        self.x_test = x_test
+        self.y_test = y_test
+        
+    def __getitem__(self, index):
+        return x_test[index], y_test[index].unsqueeze(0)
+    
+    def __len__(self):
+        return self.len
+
+
+train = FaceTrain()
+test = FaceTest()
+
+train_loader = DataLoader(dataset=train, batch_size=64, shuffle=True)
+test_loader = DataLoader(dataset=test, batch_size=64, shuffle=True)
+
+epochs = 10
+steps = 0
+train_losses, test_losses = [], []
+for e in range(epochs):
+    running_loss = 0
+    for images, labels in train_loader: 
+        optimizer.zero_grad()
+        log_ps = net(images)
+        loss = loss_function(log_ps, labels)
+        loss.backward()
+        optimizer.step()        
+        running_loss += loss.item()        
+    else:
+        test_loss = 0
+        accuracy = 0        
+
+        with torch.no_grad():
+            for images, labels in test_loader: 
+                log_ps = net(images)
+                test_loss += loss_function(log_ps, labels)                
+                ps = torch.exp(log_ps)
+                top_p, top_class = ps.topk(1, dim=1)
+                equals = top_class.type('torch.LongTensor') == labels.type('torch.LongTensor').view(*top_class.shape)
+                accuracy += torch.mean(equals.type('torch.FloatTensor'))
+        train_losses.append(running_loss/len(train_loader))
+        test_losses.append(test_loss/len(test_loader))
+        print("[Epoch: {}/{}] ".format(e+1, epochs),
+              "[Training Loss: {:.3f}] ".format(running_loss/len(train_loader)),
+              "[Test Loss: {:.3f}] ".format(test_loss/len(test_loader)),
+              "[Test Accuracy: {:.3f}]".format(accuracy/len(test_loader)))
+

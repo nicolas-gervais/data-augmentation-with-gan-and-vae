@@ -184,7 +184,14 @@ def specifications(website, trims, keep_all_images=True):
         if len(list_urls) > 0:
             specifications_table_all = pd.concat([specifications_table_all, specifications_df_all], axis=1, sort=False)
             if rear_front_img_count > 0:
+<<<<<<< HEAD
                 specifications_table_front_rear = pd.concat([specifications_table_front_rear, specifications_df_front_rear], axis=1, sort=False)
+=======
+                specifications_table_front_rear = pd.concat([specifications_table_front_rear, specifications_df_front_rear], 
+                                                            axis=1, sort=False)
+        else:
+            print(website + webpage.replace('specifications', 'overview'))
+>>>>>>> f3d7ea1a43fb553af5afb90112abbb5be012f78e
 
         # Save content every 10 images
         if inx % 10 == 0:
@@ -255,6 +262,7 @@ if __name__ == '__main__':
             for ix, url in enumerate(img_urls):
                 saveImage(url, pic_name+'_'+str(ix), 'front_rear')
 
+<<<<<<< HEAD
     
 
 
@@ -266,4 +274,6 @@ if __name__ == '__main__':
 
 
 
+=======
+>>>>>>> f3d7ea1a43fb553af5afb90112abbb5be012f78e
 
