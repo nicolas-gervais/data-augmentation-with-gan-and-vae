@@ -107,10 +107,8 @@ def create_file_name(row):
     # rownames = [str(x).strip().replace(',','').replace(' ','_').replace('/','.') for inx, x in row.iteritems()[0]
     #                                      if 'Picture_' not in inx]
     # return '--'.join(rownames)
-    print(row)
-    print(row[0])
-    print(a)
-    return row.index.strip().replace(' ','_').replace('/','.')
+    # print(row[0])
+    return row[0].strip().replace(' ','_').replace('/','.')
 
 
 def specifications(website, trims, keep_all_images=True):
@@ -147,23 +145,32 @@ def specifications(website, trims, keep_all_images=True):
             row_value = div.find_all("span")[1].text
             specifications_df_all.loc[row_name] = row_value
             specifications_df_front_rear.loc[row_name] = row_value
+        
         try:
-            driver.get(website + webpage.replace('specifications', 'overview'))
-            class_img = driver.find_elements_by_class_name('image')
+            driver.get(website + webpage.replace('overview', 'photos'))
+            time.sleep(0.5)
+            ext_btn = driver.find_element_by_class_name('view-mode.show-ext')
+            if ext_btn.text == 'Exterior':
+                ext_btn.click()
+            time.sleep(0.5)
+            class_img_ext = driver.find_elements_by_xpath("//div[@class='thumbs-wrapper']/div[starts-with(@class, 'thumbs-slide') and not(contains(@class, 'video'))]/img")
+            list_urls = [x.get_attribute("src").replace('/tmb/','/sml/').replace('_t.gif','_s.jpg') for x in class_img_ext]
         except:
+            list_urls = []
             print(f'Problem with {website + webpage}')
         
         # Different layout for older images
-        if len(class_img) == 0:
-            try:
-                driver.get(website + webpage.replace('overview', 'photos'))
-                class_img = driver.find_elements_by_class_name('image')
-            except:
-                print(f'Problem with {website + webpage}')
+        # if len(class_img) == 0:
+        #     try:
+        #         driver.get(website + webpage.replace('overview', 'photos'))
+        #         class_img = driver.find_elements_by_class_name('image')
+        #         list_urls = []
+        #         for ii in class_img:
+        #             list_urls.append(ii.get_attribute('data-image-small'))
+        #     except:
+        #         print(f'Problem with {website + webpage}')
         
-        list_urls = []
-        for ii in class_img:
-            list_urls.append(ii.get_attribute('data-image-small'))
+
         
         # Keep a count of rear and front images to put them at start of index
         rear_front_img_count = 0
@@ -174,12 +181,10 @@ def specifications(website, trims, keep_all_images=True):
                 rear_front_img_count += 1
             
         # If no images, we don't add to the main df
-        if len(class_img) > 0:
+        if len(list_urls) > 0:
             specifications_table_all = pd.concat([specifications_table_all, specifications_df_all], axis=1, sort=False)
             if rear_front_img_count > 0:
                 specifications_table_front_rear = pd.concat([specifications_table_front_rear, specifications_df_front_rear], axis=1, sort=False)
-        else:
-            print(website + webpage.replace('specifications', 'overview'))
 
         # Save content every 10 images
         if inx % 10 == 0:
@@ -193,8 +198,10 @@ def specifications(website, trims, keep_all_images=True):
     # At the end of loop
     specifications_table_all.to_csv('data/pictures_all.csv')
     specifications_table_front_rear.to_csv('data/pictures_rear_front.csv')
+    specifications_table_all.to_csv('data/img_left_octobre_2019.csv')
+    specifications_table_front_rear.to_csv('data/img_left_frontrear_octobre_2019.csv')
 
-fetch_urls       = True
+fetch_urls       = False
 download_images  = True
 
 if __name__ == '__main__':
@@ -216,8 +223,8 @@ if __name__ == '__main__':
         h = specifications(website, g)
 
     if download_images:
-        i_all = pd.read_csv('data/pictures_all.csv',index_col=0)
-        i_front_rear = pd.read_csv('data/pictures_rear_front.csv',index_col=0)
+        i_all = pd.read_csv('data/img_left_octobre_2019.csv',index_col=0)
+        i_front_rear = pd.read_csv('data/img_left_frontrear_octobre_2019.csv',index_col=0)
 
         i_all = i_all.transpose().reset_index()
         i_front_rear = i_front_rear.transpose().reset_index()
@@ -225,26 +232,29 @@ if __name__ == '__main__':
         i_all['imgName'] = i_all.apply(create_file_name, axis=1)
         i_front_rear['imgName'] = i_front_rear.apply(create_file_name, axis=1)
 
+        start = time.time()
+        
         for ind, row in i_all.iterrows():
             if ind % 10 == 0:
+                timer(start, time.time(), ind, len(i_all.index))
                 print('%i/%i image pages for all angles completed.' %(ind,len(i_all.index)))
+                i_all.iloc[ind:].to_csv('data/img_left_octobre_2019.csv')
             img_urls = [x for inx, x in row.iteritems() if 'Picture_' in inx and str(x) != 'nan']
             pic_name = row['imgName']
             for ix, url in enumerate(img_urls):
                 saveImage(url, pic_name+'_'+str(ix), 'all_images')
 
-
+        start = time.time()
         for ind, row_front in i_front_rear.iterrows():
             if ind % 10 == 0:
+                timer(start, time.time(), ind, len(i_front_rear.index))
                 print('%i/%i image pages for front/rear completed.' %(ind,len(i_front_rear.index)))
+                i_front_rear.iloc[ind:].to_csv('data/img_left_frontrear_octobre_2019.csv')
             img_urls = [x for inx, x in row_front.iteritems() if 'Picture_' in inx and str(x) != 'nan']
             pic_name = row_front['imgName']
             for ix, url in enumerate(img_urls):
                 saveImage(url, pic_name+'_'+str(ix), 'front_rear')
 
-
-        # saveImage('https://images.hgmsites.net/hug/2008-acura-mdx-4wd-4-door-sport-entertainment-pkg-temperature-controls_100283848_h.jpg',
-        #             'imgabc', 'all_images')
     
 
 
