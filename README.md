@@ -10,7 +10,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 3. So we tried with Keras to see if our architecture was the problem. It's not. [We reached 90% accuracy](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Keras%20CNN%20Benchmark.ipynb). 
 4. Here is the [adversarial auto encoder](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Adversarial%20Auto%20Encoder.ipynb).
 5. Here is the [Wasserstein GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Wasserstein%20GAN.ipynb).
-6. The [Softmax GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/softmax%20gan.ipynb) worked out pretty well.
+6. The [Softmax GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Softmax%20GAN.ipynb) worked out pretty well.
 7. The [Deep Convolutional GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Deep%20Convolutional%20GAN.ipynb) has worked but its performance is quite low.
 8. Finally fixed the [Pytorch CNN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Pytorch%20ConvNet%20Distinguishing%20Men%20and%20Women.ipynb), with 92% accuracy!
 ## TO DO
