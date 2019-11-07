@@ -103,11 +103,6 @@ def create_file_name(row):
         Takes all columns not named pictures and delimits it with --
         Also replaces spaces in individual columns with _
     '''
-
-    # rownames = [str(x).strip().replace(',','').replace(' ','_').replace('/','.') for inx, x in row.iteritems()[0]
-    #                                      if 'Picture_' not in inx]
-    # return '--'.join(rownames)
-    # print(row[0])
     return row[0].strip().replace(' ','_').replace('/','.')
 
 
@@ -227,12 +222,13 @@ if __name__ == '__main__':
     if download_images:
         i_all = pd.read_csv('data/img_left_octobre_2019.csv',index_col=0)
         i_front_rear = pd.read_csv('data/img_left_frontrear_octobre_2019.csv',index_col=0)
-
-        i_all = i_all.transpose().reset_index()
-        i_front_rear = i_front_rear.transpose().reset_index()
-
-        i_all['imgName'] = i_all.apply(create_file_name, axis=1)
-        i_front_rear['imgName'] = i_front_rear.apply(create_file_name, axis=1)
+        
+        if 'imgName' not in i_all.columns:
+            i_all = i_all.transpose().reset_index()
+            i_all['imgName'] = i_all.apply(create_file_name, axis=1)
+        if 'imgName' not in i_front_rear.columns:
+            i_front_rear = i_front_rear.transpose().reset_index()
+            i_front_rear['imgName'] = i_front_rear.apply(create_file_name, axis=1)
 
         start = time.time()
         
