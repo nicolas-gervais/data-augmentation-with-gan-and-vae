@@ -30,8 +30,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
     - GAN
     - other
 4. Compare performance, plot 
-## MISC
-- Try random erasing
+5. Determine if the generated samples have information that is not contained in the original pictures
 ## Example of the Adversarial Auto Encoder Learning
 ![Alt Text](https://media.discordapp.net/attachments/552684049588682752/632967292946350080/sickgif.gif)
 
