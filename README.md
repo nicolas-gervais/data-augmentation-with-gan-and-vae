@@ -13,6 +13,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 6. The [Softmax GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Softmax%20GAN.ipynb) worked out pretty well.
 7. The [Deep Convolutional GAN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Deep%20Convolutional%20GAN.ipynb) has worked but its performance is quite low.
 8. Finally fixed the [Pytorch CNN](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Pytorch%20ConvNet%20Distinguishing%20Men%20and%20Women.ipynb), with 92% accuracy!
+9. The CNN was able to classify generated samples, when trained on the original samples, with [100% accuracy](https://github.com/nicolas-gervais/data-augmentation-with-gan-and-vae/blob/master/Pytorch%20CNN%20to%20Test%20on%20the%20Generated%20Samples.ipynb).
 ## TO DO
 - [x] Train a Tensorflow convolutional neural network as classifier
 - [x] Create a GAN to generate human faces
@@ -20,6 +21,7 @@ Unbalanced classes is one of the most frequent struggle when dealing with real d
 - [ ] Train CNNs to see if the accuracy is better with the generative methods
 - [x] Fix the Pytorch CNN
 - [ ] Use Keras and Pydot to plot the chosen architecture
+- [x] Use generated samples as test set to see if there is untapped information
 ## PROJECT PLAN
 1. Create various sample generators
 2. Establish a benchmark CNN classifier, trained with 10% of the female samples (smaller class)
