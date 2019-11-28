@@ -1,0 +1,5 @@
+Given our non-significant results, we aimed to determine the reason why the generated samples did not improve the classifier. Clearly, the numerous additional samples did not provide any new information. As such, the information in the generated samples was already contained in the real samples. 
+
+In an attempt to demonstrate this hypothesis, we trained a classifier on 8,000 _real_ men and 8,000 _real_ women. As test data, we used 10,000 generated men and 10,000 generated men. The pictures of women were reused from the previous analyses, and 10,000 men were generated with the 5 adversarial networks mentioned previously, without altering hyperparameters. 
+
+As expected, when trained on real samples, the classifier had an outstanding performance on the generated samples. Within two epochs, the accuracy was 100%. We regret to say that the VAEs and GANs did not magically yield more information than what had been fed to them. 
